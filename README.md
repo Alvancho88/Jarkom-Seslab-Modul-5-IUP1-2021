@@ -53,7 +53,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 ### 1.) PC Baratie tidak diizinkan mengakses server Water7
 
 ```
-# iptables -A INPUT -s IPBaratie -j DROP
+# iptables -A INPUT -s 10.38.1.1 -j DROP
 ```
 
 ### 2.) PC Arabasta tidak dapat diakses pada pukul 07.00 - 17.00
@@ -89,6 +89,16 @@ iptables -A FORWARD -s IPGuanhao -m time --timestart 07:00 --timestop 17:00 -j D
 ```
 # iptables -A FORWARD -s IPBaratie -j ACCEPT
 ```
+
+## VLSM
+
+14 host
+
+10.38.0.1/28
+
+10.38.0.0/29 --- 10.38.0.6/29
+
+10.38.0.0
 
 ## Config ETH All
 
@@ -241,13 +251,25 @@ iface eth0 inet static
 ```
 # !/bin/sh
 
-route add -net 10.38.1.4 netmask 255.255.255.0 gw 10.38.1.2
-route add -net 10.38.1.6 netmask 255.255.255.0 gw 10.38.1.2
-route add -net 10.38.1.8 netmask 255.255.255.0 gw 10.38.1.2
+route add -net 10.38.1.0 netmask 255.255.255.252 gw 10.38.1.14
+route add -net 10.38.1.4 netmask 255.255.255.252 gw 10.38.1.14
+route add -net 10.38.1.8 netmask 255.255.255.252 gw 10.38.1.14
 
-route add -net 10.38.2.4 netmask 255.255.255.0 gw 10.38.2.2
-route add -net 10.38.2.6 netmask 255.255.255.0 gw 10.38.2.2
-route add -net 10.38.2.8 netmask 255.255.255.0 gw 10.38.2.2
+route add -net 10.38.1.24 netmask 255.255.255.252 gw 10.38.1.18
+route add -net 10.38.1.28 netmask 255.255.255.252 gw 10.38.1.18
+route add -net 10.38.1.32 netmask 255.255.255.252 gw 10.38.1.18
+
+```
+
+### Guanhao
+```
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.38.1.17
+route add -net 0.0.0.0/0  gw 10.38.1.17
+```
+
+### Pucci
+```
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.38.1.13
 ```
 
 ## Config normal
