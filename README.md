@@ -52,6 +52,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 ### 1.) PC Baratie tidak diizinkan mengakses server Water7
 
+Water7
 ```
 # iptables -A INPUT -s 10.38.1.1 -j DROP
 ```
@@ -72,6 +73,7 @@ Referensi Waktu
 iptables -A INPUT -p tcp -m time --timestart 02:00 --timestop 03:00 -j DROP
 ```
 
+Arabasta
 Versi 1
 ```
 iptables -A INPUT -m time --timestart 07:00 --timestop 17:00 -j DROP
@@ -95,6 +97,7 @@ iptables -A FORWARD -s IPGuanhao -m time --timestart 07:00 --timestop 17:00 -j D
 
 ### 3.) Server Water7 tidak diperbolehkan menerima koneksi HTTP 
 
+Water7
 ```
 # iptables -A INPUT -p tcp --dport 80 -j DROP
 ```
@@ -119,6 +122,7 @@ PORT   STATE    SERVICE
 
 ### 4.) Semua paket yang menuju PC Baratie akan diarahkan ke PC Mariejois (Forwarding)
 
+Pucci
 ```
 iptables -t nat -A PREROUTING -d 10.38.1.2 -j DNAT --to-destination 10.38.1.6
 ```
