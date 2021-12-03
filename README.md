@@ -56,6 +56,10 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 # iptables -A INPUT -s 10.38.1.1 -j DROP
 ```
 
+a Ping Baratie ke Water 7
+
+b Ping node lain ke Water 7
+
 ### 2.) PC Arabasta tidak dapat diakses pada pukul 07.00 - 17.00
 
 Drop semua koneksi ke
@@ -70,7 +74,18 @@ iptables -A INPUT -p tcp -m time --timestart 02:00 --timestop 03:00 -j DROP
 
 Versi 1
 ```
-iptables -A INPUT -s IPGuanhao -m time --timestart 07:00 --timestop 17:00 -j DROP
+iptables -A INPUT -m time --timestart 07:00 --timestop 17:00 -j DROP
+```
+
+Cek Date
+```
+date
+```
+
+Ganti Date dan cek bila ping otomatis stop dan lanjut
+```
+date -s "12:00"
+date -s "17:00"
 ```
 
 Versi 2
@@ -84,11 +99,36 @@ iptables -A FORWARD -s IPGuanhao -m time --timestart 07:00 --timestop 17:00 -j D
 # iptables -A INPUT -p tcp --dport 80 -j DROP
 ```
 
+cek commands
+```
+nmap
+```
+
+Di note selain Water 7
+```
+nmap IPWater7
+nmap 10.38.1.30
+```
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2021-05-12 17:09 UTC
+Nmap scan report for 10.38.1.30
+Host is up (0.00028s latency).
+Not shown: 999 closed ports
+PORT   STATE    SERVICE
+80/tcp filtered http
+
 ### 4.) Semua paket yang menuju PC Baratie akan diarahkan ke PC Mariejois (Forwarding)
 
 ```
-# iptables -A FORWARD -s IPBaratie -j ACCEPT
+iptables -t nat -A PREROUTING -d 10.38.1.2 -j DNAT --to-destination 10.38.1.6
 ```
+
+tcpdumb di Baratie dan Mariejois
+```
+tcpdumb
+```
+
+Dari Foosha ping ke Baratie dan Mariejois
 
 ## VLSM
 
@@ -104,91 +144,80 @@ iptables -A FORWARD -s IPGuanhao -m time --timestart 07:00 --timestop 17:00 -j D
 
 ### Foosha
 ```
-auto lo
-iface lo inet loopback
-
 auto eth0
 iface eth0 inet dhcp
 
 auto eth1
 iface eth1 inet static
-	address 10.38.1.1
-	netmask 255.255.255.0
+	address 10.38.1.13
+	netmask 255.255.255.252
 
 auto eth2
 iface eth2 inet static
-	address 10.38.2.1
-	netmask 255.255.255.0 
+address 10.38.1.17
+netmask 255.255.255.252
   
 auto eth3
 iface eth3 inet static
-	address 10.38.3.1
-	netmask 255.255.255.0 
+	address 10.38.1.21
+	netmask 255.255.255.252
 ```
 
 ### Pucci
 ```
-auto lo
-iface lo inet loopback
-
 auto eth0
 iface eth0 inet static
-	address 10.38.1.2
-	netmask 255.255.255.0
-	gateway 10.38.1.1
+	address 10.38.1.14
+	netmask 255.255.255.252
   
 auto eth1
-iface eth0 inet static
-	address 10.38.1.3
-	netmask 255.255.255.0
+iface eth1 inet static
+	address 10.38.1.1
+	netmask 255.255.255.252
   
 auto eth2
-iface eth1 inet static
+iface eth2 inet static
   address 10.38.1.5
-  netmask 255.255.255.0
+  netmask 255.255.255.252
 
 
 auto eth3
-iface eth1 inet static
-  address 10.38.1.7
-  netmask 255.255.255.0
+iface eth3 inet static
+  address 10.38.1.9
+  netmask 255.255.255.252
 ```
 
 ### Guanhao
 ```
-auto lo
-iface lo inet loopback
-
 auto eth0
 iface eth0 inet static
-	address 10.38.2.2
-	netmask 255.255.255.0
-	gateway 10.38.2.1
+	address 10.38.1.18
+	netmask 255.255.255.252
   
 auto eth1
-iface eth0 inet static
-	address 10.38.2.3
-	netmask 255.255.255.0
+iface eth1 inet static
+	address 10.38.1.25
+	netmask 255.255.255.252
   
 auto eth2
-iface eth1 inet static
-  address 10.38.2.5
-  netmask 255.255.255.0
+iface eth2 inet static
+  address 10.38.1.29
+  netmask 255.255.255.252
 
 
 auto eth3
-iface eth1 inet static
-  address 10.38.2.7
-  netmask 255.255.255.0
+iface eth3 inet static
+  address 10.38.1.33
+  netmask 255.255.255.252
 ```
 
 ### Baratie
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.1.4
-	netmask 255.255.255.0
-	gateway 10.38.1.3
+	address 10.38.1.2
+	netmask 255.255.255.252
+	gateway 10.38.1.1
 ```
 
 ### Mariejois
@@ -196,7 +225,7 @@ iface eth0 inet static
 auto eth0
 iface eth0 inet static
 	address 10.38.1.6
-	netmask 255.255.255.0
+	netmask 255.255.255.252
 	gateway 10.38.1.5
 ```
 
@@ -204,9 +233,9 @@ iface eth0 inet static
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.1.8
-	netmask 255.255.255.0
-	gateway 10.38.1.7
+	address 10.38.1.10
+	netmask 255.255.255.252
+	gateway 10.38.1.9
 ```
 
 ### Enieslobby
@@ -222,27 +251,27 @@ iface eth0 inet static
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.2.4
-	netmask 255.255.255.0
-	gateway 10.38.2.3
+	address 10.38.1.26
+	netmask 255.255.255.252
+	gateway 10.38.1.25
 ```
 
 ### Water7
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.2.6
-	netmask 255.255.255.0
-	gateway 10.38.2.5
+	address 10.38.1.30
+	netmask 255.255.255.252
+	gateway 10.38.1.29
 ```
 
 ### Loguetown
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.2.8
-	netmask 255.255.255.0
-	gateway 10.38.2.7
+	address 10.38.1.34
+	netmask 255.255.255.252
+	gateway 10.38.1.33
 ```
 
 ## Routing
@@ -264,6 +293,7 @@ route add -net 10.38.1.32 netmask 255.255.255.252 gw 10.38.1.18
 ### Guanhao
 ```
 route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.38.1.17
+atau
 route add -net 0.0.0.0/0  gw 10.38.1.17
 ```
 
