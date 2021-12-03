@@ -101,6 +101,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 https://www.thegeekstuff.com/2011/06/iptables-rules-examples/
 
 https://opensource.com/article/18/10/iptables-tips-and-tricks
+
 Regulate by Time
 Scenario: The backlash from the company's employees over denying access to Facebook access causes the CEO to relent a little (that and his administrative assistant's reminding him that she keeps HIS Facebook page up-to-date). The CEO decides to allow access to Facebook.com only at lunchtime (12PM to 1PM). Assuming the default policy is DROP, use iptables' time features to open up access.
 
