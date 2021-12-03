@@ -134,13 +134,13 @@ iface eth0 inet static
   
 auto eth2
 iface eth1 inet static
-  address 10.38.1.4
+  address 10.38.1.5
   netmask 255.255.255.0
 
 
 auto eth3
 iface eth1 inet static
-  address 10.38.1.5
+  address 10.38.1.7
   netmask 255.255.255.0
 ```
 
@@ -162,13 +162,13 @@ iface eth0 inet static
   
 auto eth2
 iface eth1 inet static
-  address 10.38.2.4
+  address 10.38.2.5
   netmask 255.255.255.0
 
 
 auto eth3
 iface eth1 inet static
-  address 10.38.2.5
+  address 10.38.2.7
   netmask 255.255.255.0
 ```
 
@@ -176,7 +176,7 @@ iface eth1 inet static
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.1.6
+	address 10.38.1.4
 	netmask 255.255.255.0
 	gateway 10.38.1.3
 ```
@@ -185,9 +185,9 @@ iface eth0 inet static
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.1.7
+	address 10.38.1.6
 	netmask 255.255.255.0
-	gateway 10.38.1.4
+	gateway 10.38.1.5
 ```
 
 ### Wano
@@ -196,7 +196,7 @@ auto eth0
 iface eth0 inet static
 	address 10.38.1.8
 	netmask 255.255.255.0
-	gateway 10.38.1.5
+	gateway 10.38.1.7
 ```
 
 ### Enieslobby
@@ -208,11 +208,11 @@ iface eth0 inet static
 	gateway 10.38.3.1
 ```
 
-### Loguetown
+### Arabasta
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.2.6
+	address 10.38.2.4
 	netmask 255.255.255.0
 	gateway 10.38.2.3
 ```
@@ -221,18 +221,47 @@ iface eth0 inet static
 ```
 auto eth0
 iface eth0 inet static
-	address 10.38.2.7
+	address 10.38.2.6
 	netmask 255.255.255.0
-	gateway 10.38.2.4
+	gateway 10.38.2.5
 ```
 
-### Arabasta
+### Loguetown
 ```
 auto eth0
 iface eth0 inet static
 	address 10.38.2.8
 	netmask 255.255.255.0
-	gateway 10.38.2.5
+	gateway 10.38.2.7
+```
+
+## Routing
+
+### Foosha
+```
+# !/bin/sh
+
+route add -net 10.38.1.4 netmask 255.255.255.0 gw 10.38.1.2
+route add -net 10.38.1.6 netmask 255.255.255.0 gw 10.38.1.2
+route add -net 10.38.1.8 netmask 255.255.255.0 gw 10.38.1.2
+
+route add -net 10.38.2.4 netmask 255.255.255.0 gw 10.38.2.2
+route add -net 10.38.2.6 netmask 255.255.255.0 gw 10.38.2.2
+route add -net 10.38.2.8 netmask 255.255.255.0 gw 10.38.2.2
+```
+
+## Config normal
+
+### nano ./.bashrc
+```
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.38.0.0/16
+/root/config.sh
+echo "nameserver 10.38.122.1" > /etc/resolv.conf
+```
+
+### Terminal
+```
+chmod +x config.sh
 ```
 
 ## References
